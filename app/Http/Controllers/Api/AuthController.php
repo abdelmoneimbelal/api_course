@@ -57,6 +57,7 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
+            $user->tokens()->delete();
             $data['token'] =  $user->createToken('MyAuthApp')->plainTextToken;
             $data['name'] =  $user->name;
             $data['email'] =  $user->email;
@@ -64,5 +65,10 @@ class AuthController extends Controller
         } else {
             return ApiResponse::sendResponse(401, 'These credentials doesn\'t exist', null);
         }
+    }
+
+    public function logout (Request $request){
+        $request->user()->currentAccessToken()->delete();
+        return ApiResponse::sendResponse(200, 'Logout Successfully',[]);
     }
 }
