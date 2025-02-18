@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\DomainController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\DistrictController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,11 @@ use App\Http\Controllers\Api\DistrictController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('register', 'register');
+    Route::post('login', 'login');
 });
 
 // ----------------------------------------------------Settings
