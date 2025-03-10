@@ -2,12 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AdController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\DomainController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\DistrictController;
-use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +41,26 @@ Route::get('districts', DistrictController::class);
 Route::post('messages', MessageController::class);
 // ----------------------------------------------------domains
 Route::get('domains', DomainController::class);
+
+Route::prefix('ads')->controller(AdController::class)->group(function () {
+    // basic
+    Route::get('/', 'index');
+    Route::get('/latest', action: 'latest');
+    Route::get('/domain/{domain_id}', 'domain');
+    Route::get('/search', 'search');
+    // User API ads endpoint
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('create', 'create');
+        Route::post('update/{adId}', 'update');
+        Route::get('delete/{adId}', 'delete');
+        Route::get('myads', 'myads');
+    });
+
+    // user API ads endpoint
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('create', 'create');
+        Route::post('update/{adId}', 'update');
+        Route::get('delete/{adId}', 'delete');
+        Route::get('myads', 'myads');
+    });
+});

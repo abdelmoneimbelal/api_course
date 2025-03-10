@@ -19,5 +19,9 @@ class DomainSeeder extends Seeder
             'name' => 'مبدعون وافراد',
             'status' => '0',
         ]);
+        Domain::updateOrCreate(['name' => 'Domain 2'], [
+            'name' => 'Domain 2',
+            'status' => '0',
+        ]);
     }
 }

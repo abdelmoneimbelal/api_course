@@ -38,7 +38,8 @@ class AdController extends Controller
 
     public function latest()
     {
-        $ads = Ad::latest()->take(2)->get();
+        $ads = Ad::latest()->take(5)->get();
+        // $ads = Ad::latest('id')->take(5)->get();
         if (count($ads) > 0) {
             return ApiResponse::sendResponse(200, 'Latest Ads Retrieved Successfully', AdResource::collection($ads));
         }
@@ -59,7 +60,7 @@ class AdController extends Controller
         $word = $request->has('search') ? $request->input('search') : null;
         $ads = Ad::when($word != null, function ($q) use ($word) {
             $q->where('title', 'like', '%' . $word . '%');
-        })->latest()->get();
+        })->latest('id')->get();
         if (count($ads) > 0) {
             return ApiResponse::sendResponse(200, 'Search completed', AdResource::collection($ads));
         }
